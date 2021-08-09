@@ -1,0 +1,3 @@
+spinnaker-python
+opencv-python
+numpy
