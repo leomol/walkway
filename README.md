@@ -18,12 +18,13 @@ A video is saved to disk every time motion is detected.
 	- Adjust image format to limit the view to the apparatus' walkway.
 	- Stop acquisition.
 * Open `cmd`
-* Run `python -m walkway`
+* Run `python -m walkway.capture`
 * Press `q` on the GUI or `ctrl+c` on the command window when done.
 * Video files are saved to the working directory of `cmd` (defaults to `C:/Users/<your username>` in Windows).
 
 
 ## Version History
+* 0.0.4: Add argument parser and configuration file.
 * 0.0.1: Initial release. Scripts are multi-threaded so as to not lag during writing operations to disk.
 
 
