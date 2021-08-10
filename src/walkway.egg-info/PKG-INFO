@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: walkway
-Version: 0.0.3
+Version: 0.0.4
 Summary: Motion detector for a narrow runway
 Home-page: https://github.com/leomol/walkway
 Author: Leo Molina
@@ -53,5 +53,5 @@ Classifier: Intended Audience :: Science/Research
 Classifier: Topic :: Scientific/Engineering :: Image Processing
 Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
 Classifier: Programming Language :: Python :: 3.8
-Requires-Python: <3.9,>=3.8
+Requires-Python: >=3.8
 Description-Content-Type: text/markdown

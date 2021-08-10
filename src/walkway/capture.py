@@ -3,15 +3,19 @@
 
 from .flexible import Flexible
 from .scheduler import Scheduler
+from pathlib import Path
 from threading import Lock
 
+import argparse
 import cv2
 import datetime
+import json
 import math
 import numpy as np
 import PySpin
 import signal
 import sys
+import textwrap
 import threading
 import time
     
@@ -77,6 +81,21 @@ class States:
     Ended = 2
 
 class Capture(object):
+    """
+    Capture high-framerate videos of a custom-made, CatWalk-like setup for mice using FLIR's BlackFly cameras.
+    A video is saved to disk every time motion is detected.
+    A configuration file in JSON format (e.g., {\"minDuration\":0.1, \"locomotionThreshold\":0.1})
+    may include any of the following properties:
+        locomotionThreshold
+        quiescenceThreshold
+        minDuration
+        maxDuration
+        speedThreshold
+        areaProportion
+        bufferSize
+        blurSize
+    """
+
     @property
     def resolution(self):
         p = self.__private
@@ -318,7 +337,7 @@ class Capture(object):
         p = self.__private
         p.running = False
         
-    def __init__(self):
+    def __init__(self, **kwargs):
         p = self.__private = Flexible()
         
         # Locomotion starts when the number of active x-pixels is larger than k * width.
@@ -355,6 +374,21 @@ class Capture(object):
         p.processLock = Lock()
         p.buffer = list()
         
+        public = list([
+            "locomotionThreshold",
+            "quiescenceThreshold",
+            "minDuration",
+            "maxDuration",
+            "speedThreshold",
+            "areaProportion",
+            "bufferSize",
+            "blurSize"
+        ])
+        
+        kwargs = {key: value for key, value in kwargs.items() if key in public}
+        for key, value in kwargs.items():
+            p.set(key, value)
+        
         p.processScheduler = Scheduler()
         p.processScheduler.subscribe(lambda scheduler: self.__onProcess())
         self.__resetBackground()
@@ -362,7 +396,31 @@ class Capture(object):
         signal.signal(signal.SIGINT, lambda sig, frame: self.__onKillSignal())
         signal.signal(signal.SIGTERM, lambda sig, frame: self.__onKillSignal())
 
+def jsonFile(filename):
+    if Path(filename).is_file():
+        try:
+            f = open(filename)
+            json.load(f)
+            f.close()
+            return filename
+        except json.JSONDecodeError as e:
+            f.close()
+            raise e
+        except Exception as e:
+            raise e
+    else:
+        raise FileNotFoundError(filename)
+
 if __name__ == "__main__":
-    result = Capture().start()
-    sys.exit(int(result))
+    parser = argparse.ArgumentParser(description=Capture.__doc__, formatter_class=argparse.RawTextHelpFormatter)
     
+    parser.add_argument('--configuration', type=jsonFile, help="Configuration file in JSON format")
+    args = parser.parse_args()
+    
+    kwargs = {}
+    if args.configuration is not None:
+        with open(args.configuration) as f:
+            kwargs = json.load(f)
+    result = Capture(**kwargs).start()
+    
+    sys.exit(int(result))
