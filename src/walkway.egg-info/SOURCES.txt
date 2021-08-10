@@ -1,0 +1,15 @@
+LICENSE.md
+README.md
+pyproject.toml
+setup.cfg
+setup.py
+src/walkway/__init__.py
+src/walkway/capture.py
+src/walkway/events.py
+src/walkway/flexible.py
+src/walkway/scheduler.py
+src/walkway.egg-info/PKG-INFO
+src/walkway.egg-info/SOURCES.txt
+src/walkway.egg-info/dependency_links.txt
+src/walkway.egg-info/requires.txt
+src/walkway.egg-info/top_level.txt
