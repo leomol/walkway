@@ -1,31 +1,32 @@
 # Walkway - motion detector
 
-Capture high-framerate videos of a custom-made, CatWalk-like setup for mice using FLIR's BlackFly cameras.
-A video is saved to disk every time motion is detected.
+Capture high frame rate videos of a custom-made, CatWalk like setup for mice using a FLIR's BlackFly camera.
+A video is saved to disk whenever motion is detected and if locomotion satisfies the criteria defined in the configuration (e.g. ignoring brief periods of locomotion).
 
 ## Installation
-* Install [SpinView (Latest Spinnaker Web Installer)][SpinView]
+* Install [SpinView (Spinnaker Web Installer)][SpinView]
 * Install [Python version 3.8][Python38]
 * Open `cmd`
 * Run `pip install walkway` or `python -m pip install walkway`.
 
 ## Usage overview
-* Power on IR ligth source.
+* Power on IR light source.
 * Plug in camera to computer.
-* Setup camera using SpinView, if necessary:
-	- Start acquisition.
+* Adjust camera settings using SpinView, if necessary:
 	- Adjust camera aperture and focus to view region of interest under the light conditions expected during the experiment.
-	- Adjust image format to limit the view to the apparatus' walkway.
-	- Stop acquisition.
+	- Adjust image format to limit the view to the apparatus' walkway. Note that some parameters can only be changed when acquisition is off.
 * Open `cmd`
-* Run `python -m walkway.capture`
+* Run `python -m walkway.capture` to start auto-triggering.
 * Press `q` on the GUI or `ctrl+c` on the command window when done.
-* Video files are saved to the working directory of `cmd` (defaults to `C:/Users/<your username>` in Windows).
+* Video files are saved to cmd's working directory (defaults to `C:/Users/<your username>` in Windows). You may `cd` to a different directory prior to start capturing to save videos elsewhere.
+* You may use a configuration file in JSON format with `python -m walkway.capture --configuration configuration.json`; this will override any parameters previously set to the camera.
+* Run `python -m walkway.capture --help` for more information.
 
 
 ## Version History
+* 0.0.7: Changed defaults. Added image parameters.
 * 0.0.4: Add argument parser and configuration file.
-* 0.0.1: Initial release. Scripts are multi-threaded so as to not lag during writing operations to disk.
+* 0.0.1: Initial release. Scripts are multithreaded so as to not lag during writing operations to disk.
 
 
 ## License
