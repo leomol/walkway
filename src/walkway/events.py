@@ -1,5 +1,7 @@
 # 2020-02-18. Leonardo Molina.
-# 2021-01-23. Last modified.
+# 2021-10-12. Last modified.
+
+from .flexible import Flexible
 
 class Subscription:
     def __init__(self, publisher):
@@ -9,45 +11,51 @@ class Subscription:
         self.publisher.unsubscribe(self);
 
 class Publisher:
-    
     def __init__(self):
-        self.__subscriptionToEvent = {}
-        self.__eventToSubscriptions = {}
-        self.__subscriptionToCallback = {}
+        p = self.__private = Flexible()
+        
+        p.subscriptionToEvent = {}
+        p.eventToSubscriptions = {}
+        p.subscriptionToCallback = {}
         pass
     
     def contains(self, event):
-        return event in self.__eventToSubscriptions
+        p = self.__private
+        return event in p.eventToSubscriptions
     
-    # subscription = subscribe(callback, <event>)
-    def subscribe(self, callback, event = ""):
+    # subscription = subscribe(event, callback)
+    def subscribe(self, event, callback):
+        p = self.__private
         subscription = Subscription(self)
-        if event not in self.__eventToSubscriptions:
-            self.__eventToSubscriptions[event] = []
-        self.__eventToSubscriptions[event].append(subscription)
-        self.__subscriptionToCallback[subscription] = callback
-        self.__subscriptionToEvent[subscription] = event
+        if event not in p.eventToSubscriptions:
+            p.eventToSubscriptions[event] = []
+        p.eventToSubscriptions[event].append(subscription)
+        p.subscriptionToCallback[subscription] = callback
+        p.subscriptionToEvent[subscription] = event
         return subscription
     
     # unsubscribe(subscription)
     def unsubscribe(self, subscription):
-        if subscription in self.__subscriptionToEvent:
-            event = self.__subscriptionToEvent[subscription]
-            self.__eventToSubscriptions[event].remove(subscription)
-            del self.__subscriptionToEvent[subscription]
-            del self.__subscriptionToCallback[subscription]
+        p = self.__private
+        if subscription in p.subscriptionToEvent:
+            event = p.subscriptionToEvent[subscription]
+            p.eventToSubscriptions[event].remove(subscription)
+            del p.subscriptionToEvent[subscription]
+            del p.subscriptionToCallback[subscription]
     
-    # invoke(<event>)
-    def invoke(self, event = "", *args, **kargs):
-        if event in self.__eventToSubscriptions:
-            for subscription in self.__eventToSubscriptions[event]:
-                callback = self.__subscriptionToCallback[subscription]
+    # invoke(event)
+    def invoke(self, event, *args, **kargs):
+        p = self.__private
+        if event in p.eventToSubscriptions:
+            for subscription in p.eventToSubscriptions[event]:
+                callback = p.subscriptionToCallback[subscription]
                 callback(*args, **kargs)
-            
-# publisher = Publisher()
-# subscription1 = publisher.subscribe(lambda : print('Called 1!'), 'EventA')
-# subscription2 = publisher.subscribe(lambda : print('Called 2!'), 'EventA')
-# subscription3 = publisher.subscribe(lambda message : print(message), 'EventB')
-# subscription1.unsubscribe()
-# publisher.invoke('EventA')
-# publisher.invoke('EventB', 'Hello!')
+                
+if __name__ == "__main__":
+    publisher = Publisher()
+    subscription1 = publisher.subscribe("EventA", lambda : print('Called 1!'))
+    subscription2 = publisher.subscribe("EventA", lambda : print('Called 2!'))
+    subscription3 = publisher.subscribe("EventB", lambda message : print(message))
+    subscription1.unsubscribe()
+    publisher.invoke("EventA")
+    publisher.invoke("EventB", "Hello!")

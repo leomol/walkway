@@ -12,7 +12,7 @@ A video is saved to disk whenever motion is detected and if locomotion satisfies
 ## Usage overview
 * Power on IR light source.
 * Plug in camera to computer.
-* Adjust camera settings using SpinView, if necessary:
+* Adjust camera settings using SpinView (optional)
 	- Adjust camera aperture and focus to view region of interest under the light conditions expected during the experiment.
 	- Adjust image format to limit the view to the apparatus' walkway. Note that some parameters can only be changed when acquisition is off.
 * Open `cmd`
@@ -22,8 +22,13 @@ A video is saved to disk whenever motion is detected and if locomotion satisfies
 * You may use a configuration file in JSON format with `python -m walkway.capture --configuration configuration.json`; this will override any parameters previously set to the camera.
 * Run `python -m walkway.capture --help` for more information.
 
+* Run `python -m walkway.gui` to open GUI.
+* Run `python -m walkway.experiment` to open an experiment with two FLIR cameras and a Petteron microphone.
+
 
 ## Version History
+* 0.0.9: Fixed folder select and load profile in experiment.
+* 0.0.8: Added a GUI and an experiment.
 * 0.0.7: Changed defaults. Added image parameters.
 * 0.0.4: Add argument parser and configuration file.
 * 0.0.1: Initial release. Scripts are multithreaded so as to not lag during writing operations to disk.
