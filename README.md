@@ -5,7 +5,7 @@ A video is saved to disk whenever motion is detected and if locomotion satisfies
 
 ## Installation
 * Install [SpinView (Spinnaker Web Installer)][SpinView]
-* Install [Python version 3.8][Python38]
+* Install [Python version 3.8][Python38] (notice that the only supported Python version is 3.8).
 * Open `cmd`
 * Run `pip install walkway` or `python -m pip install walkway`.
 
