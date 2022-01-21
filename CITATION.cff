@@ -1,9 +1,10 @@
 cff-version: 1.2.0
 title: "Motion detector for a narrow runway"
-abstract: "Automated walkway aparatus using multiple camera views and USV microphones. It eases and speeds up experimental data collection by automatically grabbing videos with locomotor activity."
+abstract: "Automated walkway apparatus using multiple camera views and USV microphones. It eases and speeds up experimental data collection by automatically grabbing videos with locomotor activity."
 message: If you use this software, please cite it.
 type: software
 version: 1.0.0
+doi: 10.5281/zenodo.5889458
 date-released: 2022-01-21
 repository-code: https://github.com/leomol/walkway
 authors:
