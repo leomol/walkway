@@ -34,11 +34,13 @@ def __onRecording(devices, filename, state):
             
     
 def __onAssign(devices, key, value):
-    if devices.recorder is not None:
-        if key == "Folder":
-            devices.capture1.set(Folder=value)
+    if key == "Folder":
+        if devices.recorder is not None:
             devices.recorder.folder = value
-        elif key == "Prefix":
+        if devices.capture1 is not None:
+            devices.capture1.set(Folder=value)
+    elif key == "Prefix":
+        if devices.recorder is not None:
             devices.recorder.prefix = value
 
 
@@ -76,20 +78,20 @@ if __name__ == '__main__':
     capture0 = Capture(DeviceUserID="bottom")
     if capture0.connect():
         appContext = QtWidgets.QApplication([])
-        print("Primary camera connected")
+        print("Bottom camera connected")
         devices.capture0 = capture0
         disposable.append(capture0)
     else:
         capture0.dispose()
         devices.capture0 = None
-        message = "Primary camera was not detected."
+        message = "Bottom camera was not detected."
         messages.append(message)
         print(message)
     
     # Try connecting to camera id 1.
     capture1 = Capture(DeviceUserID="top")
     if capture1.connect():
-        print("Secondary camera connected")
+        print("Top camera connected")
         devices.capture1 = capture1
         disposable.append(capture1)
         gui1 = GUI(capture=capture1, profile=(Path.home() / "Documents" / "WalwayExperiment-top.json"))
@@ -103,7 +105,7 @@ if __name__ == '__main__':
         capture1.dispose()
         devices.capture1 = None
         gui1 = None
-        message = "Secondary camera was not detected."
+        message = "Top camera was not detected."
         messages.append(message)
         print(message)
 

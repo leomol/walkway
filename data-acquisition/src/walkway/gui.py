@@ -486,7 +486,6 @@ class GUI(QtWidgets.QDialog):
 class QTextEditLogger(logging.Handler, QtCore.QObject):
     appendPlainText = QtCore.pyqtSignal(str)
     
-    
     def __init__(self, parent):
         super().__init__()
         QtCore.QObject.__init__(self)
