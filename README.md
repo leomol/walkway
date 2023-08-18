@@ -111,11 +111,11 @@ See [Changelog](CHANGELOG.md)
 [Creative Commons BY-NC-SA 4.0 License](https://creativecommons.org/licenses/by-nc-sa/4.0/).
 
 ### License for the source code
-[GNU GPLv3 License][LICENSE.md].
+[GNU GPLv3 License][LICENSE].
 
 [Leonardo Molina]: https://github.com/leomol
 [MATLAB]: https://www.mathworks.com/downloads/
-[LICENSE]: https://github.com/leomol/walkway/blob/master/LICENSE
+[LICENSE]: https://github.com/leomol/walkway/blob/master/LICENSE.md
 [SpinView]: https://www.flir.ca/products/spinnaker-sdk/
 [Python38]: https://www.python.org/downloads/
 
