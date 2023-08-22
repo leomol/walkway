@@ -1,3 +1,6 @@
+% Calculate weighted moving mean of circular data.
+% r = circular.movmean(window, angles, weights)
+
 % 2022-07-08. Leonardo Molina.
 % 2022-07-14. Last modified.
 function r = movmean(window, angles, weights)

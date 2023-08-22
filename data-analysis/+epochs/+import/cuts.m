@@ -1,7 +1,6 @@
+% Get epochs from cuts in a range.
+% Optional overlap offsets the start and end points of each epoch.
 % epochs = epochs.import.cuts(cuts, range, overlap);
-% 
-% Get epochs from cuts in a range. Optional overlap offsets the start and
-% end points of each epoch.
 % 
 % Example:
 %   range = [1, 100];

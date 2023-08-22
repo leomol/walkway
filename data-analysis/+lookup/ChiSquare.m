@@ -1,7 +1,7 @@
-% criticalValue = ChiSquare(dof, alpha)
-% 
-% Biostatistical Analysis by Jerrold H Zar (5th edition).
 % Table B.1: Critical Values of the Chi-Square (x^2) Distribution, page 672.
+% Biostatistical Analysis by Jerrold H Zar (5th edition).
+%
+% criticalValue = ChiSquare(dof, alpha)
 
 % 2023-08-09. Leonardo Molina.
 % 2023-08-15. Last modified.

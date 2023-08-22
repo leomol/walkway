@@ -1,4 +1,5 @@
-% [swingEpochs, stanceEpochs] = split(swingStarts, input)
+% Split- Split epochs.
+% [swingEpochs, stanceEpochs] = epochs.split(swingStarts, input)
 
 % 2022-07-12. Leonardo Molina.
 % 2023-08-18. Last modified.

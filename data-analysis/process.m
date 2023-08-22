@@ -10,7 +10,7 @@
 % where F:Front, B:Back, L:Left, R:Right, C:Body center, CA:Body angle
 
 % 2023-07-11. Leonardo Molina.
-% 2023-08-18. Last modified.
+% 2023-08-21. Last modified.
 
 %% Search recursively for DLC output files called "*DLC.csv" under project folder.
 config = struct();
@@ -55,38 +55,6 @@ data = struct('path', paths, 'uid', uids, 'prefix', prefix, 'id', num2cell(id), 
 
 % Calculate means using the grouping variable.
 groupVariables = {'prefix', 'free'};
-
-%% Setup Juyeon's data.
-% files = dir(fullfile(config.inputFolder, '**', '*DLC_*.csv'));
-% filenames = {files.name};
-% paths = fullfile({files.folder}, {files.name});
-% nPaths = numel(paths);
-% 
-% % Get identifiers from filenames.
-% % A naming convention encoded date and time, group, id, sex, single/group, forced/free in the filename.
-% uids = cell(size(paths));
-% prefixes = cell(size(paths));
-% for i = 1:nPaths
-%     filename = filenames{i};
-%     parts = strsplit(filename, '-');
-%     switch numel(parts)
-%         case 3
-%             prefixes{i} = parts{1}(1:2);
-%             uids{i} = parts{2}(2:end);
-%         case 2
-%             prefixes{i} = 'Unknown';
-%             uids{i} = parts{2}(2:end);
-%         otherwise
-%             prefixes{i} = 'Unknown';
-%             uids{i} = repmat('0', 1, 20);
-%     end
-% end
-% data = struct('filename', filenames, 'uid', uids, 'prefix', prefixes);
-% 
-% % Calculate means using the grouping variable.
-% groupVariables = {'prefix'};
-% 
-% % Configure so that a window of [-6, 2] (~50ms) is the default for a walk at 1:1 ratio of stance to swing duration.
 
 %% Find corresponding video files.
 if config.playback

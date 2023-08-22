@@ -1,5 +1,5 @@
+% Shift - shift column vector "column" up or down according to "steps"
 % shift(column, steps)
-% shift column vector "column" up or down according to "steps"
 % Example:
 %   shift(1:5, -6:6)
 

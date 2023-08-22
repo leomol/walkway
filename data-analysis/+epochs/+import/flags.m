@@ -1,9 +1,11 @@
+% Get transition epochs from a logical array.
 % [riseEpochs, fallEpochs] = epochs.import.flags(flags)
 %   [riseEpochs, fallEpochs] = epochs.import.flags([0 0 0 0 1 1 0 0 1])
 %   %  riseEpochs -->  5 9
 %   %                  6 9
 %   %  fallEpochs -->  1 7
 %   %                  4 8
+
 % 2019-04-30. Leonardo Molina.
 % 2023-08-17. Last modification.
 function [riseEpochs, fallEpochs] = flags(inputFlags, overlap)

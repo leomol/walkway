@@ -1,5 +1,5 @@
+% Convert - Convert struct to table splitting fields with a given number of elements into separate columns.
 % tbl = tables.convert(dataStruct, {suffix2a, suffix2b}, {suffix3a, suffix3b, suffix3C}, ...)
-% Convert struct to table splitting fields with a given number of elements into separate columns.
 % 
 % Example:
 %   data.center = [1, 2]

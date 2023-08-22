@@ -1,3 +1,6 @@
+% Calculate weighted mean of circular data.
+% r = circular.mean(angles, dim, weights)
+
 % 2022-07-08. Leonardo Molina.
 % 2022-07-11. Last modified.
 function r = mean(angles, dim, weights)

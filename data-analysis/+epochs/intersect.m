@@ -1,5 +1,5 @@
+% Intersect - intersect epochs1 and epochs2 and return a map from epochs3 to epochs1.
 % [epochs3, k] = epochs.intersect(epochs1, epochs2)
-% Intersect epochs1 and epochs2 and return a map from epochs3 to epochs1.
 % 
 % Example:
 %   epochs1 = [0 10; 50 70; 80 95]';

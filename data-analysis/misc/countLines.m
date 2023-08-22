@@ -1,5 +1,5 @@
-% counts = countLines(paths)
 % Count lines in text files fast.
+% counts = countLines(paths)
 % 
 % For a list of files, in Windows, defaults to using the command line, otherwise
 % defaults to reading file contents.

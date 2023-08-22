@@ -1,7 +1,7 @@
-% [faces, vertices] = epochs.export.patch(epochs, minimum, maximum)
 % Create vectors faces and vertices from vector epochs (from1, to1, from2, to2, ...)
 % to feed to MATLAB's function patch. The y-limits of the "drawing" are
 % given by minimum and maximum.
+% [faces, vertices] = epochs.export.patch(epochs, minimum, maximum)
 
 % 2019-02-01. Leonardo Molina.
 % 2023-08-17. Last modified.

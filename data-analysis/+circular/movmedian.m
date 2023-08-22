@@ -1,3 +1,6 @@
+% Calculate moving median of circular data.
+% r = circular.movmedian(window, angles)
+
 % 2022-07-08. Leonardo Molina.
 % 2022-07-08. Last modified.
 function r = movmedian(window, angles)

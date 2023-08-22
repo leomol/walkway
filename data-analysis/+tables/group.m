@@ -1,6 +1,7 @@
-% tbl = group(tbl, groupVariables, handle)
 % Similar to grpstats(tbl, groupVariables, handle) except allowing non-numeric columns.
 % The handling function isn't applied to non-numeric columns, instead the first element in the group is returned.
+% 
+% tbl = group(tbl, groupVariables, handle)
 
 % 2022-08-09. Leonardo Molina.
 % 2022-08-10. Last modified.

@@ -1,5 +1,5 @@
+% Combine overlapping epochs and return a map from epochs1 to epochs2.
 % [epochs2, ids] = epochs.blend(epochs1)
-% Blend overlapping epochs and return a map from epochs1 to epochs2.
 % 
 % Example:
 %   epochs1 = [0 10; 20 30; 25 40; 30 40; 50 60]';

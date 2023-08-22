@@ -1,11 +1,14 @@
 ## Data analysis changelog
+* 2023-08-22
+	- Added a function for Watson-Williams statistics.
+	- Minor documentation changes.
 * 2023-08-19
 	- Merged projects for data acquisition, data analysis, and manufacturing.
 	- Added CAD files for manufacturing.
 	- Added validation data.
 	- Added interlimb coordination analysis.
 	- Added example for processing generic data.
-	- Added a a function for Rayleigh statistics.
+	- Added a function for Rayleigh statistics.
 	- Isolated scripts specific to paper.
 	- Packaged epochs, circular statistics, and lookup tables.
 	- Major updates to function signatures to improve usage and readability.

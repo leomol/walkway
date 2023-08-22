@@ -1,11 +1,11 @@
-% pValue = CircularUniformity(nSamples, u)
-% 
-% Biostatistical Analysis by Jerrold H Zar (5th edition).
 % Table B.35: Critical Values of u for the V Test of Circular Uniformity, page 844.
+% Biostatistical Analysis by Jerrold H Zar (5th edition).
+% 
+% pValue = CircularUniformity(nPoints, u)
 
 % 2023-08-09. Leonardo Molina.
-% 2023-08-15. Last modified.
-function pValue = CircularUniformity(nSamples, u)
+% 2023-08-21. Last modified.
+function pValue = CircularUniformity(nPoints, u)
     persistent data alphas counts;
     if isempty(data)
         alphas = [0.25, 0.1, 0.05, 0.025, 0.01, 0.005, 0.0025, 0.001, 0.0005];
@@ -62,7 +62,7 @@ function pValue = CircularUniformity(nSamples, u)
         ];
     end
     
-    row = find(nSamples <= counts, 1);
+    row = find(nPoints <= counts, 1);
     if isempty(row)
         row = 1;
     end

@@ -1,5 +1,5 @@
-% phase = getPhases(pawX, pawY, angle, threshold, window)
 % Returns the phase of the walking cycle for each time index.
+% phase = getPhases(pawX, pawY, angle, threshold, window)
 %   0: stance
 %   1: swing
 % 

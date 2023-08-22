@@ -1,5 +1,5 @@
-% x = kid(fcn, n)
 % call fcn with n output arguments and assign the nth argument to x.
+% x = kid(fcn, n)
 % 
 % x = kid(fcn, n, k)
 % call fcn with n output arguments and assign the kth argument to x.

@@ -1,5 +1,5 @@
-% [meanCartesian, phases] = getPhaseOffset(swingPhasesA, stancePhasesA, swingPhasesB, stancePhasesB)
 % For a pair of paws, get their phase offset for each stance.
+% [meanCartesian, phases] = getPhaseOffset(swingPhasesA, stancePhasesA, swingPhasesB, stancePhasesB)
 
 % 2023-08-04. Leonardo Molina.
 % 2023-08-09. Last modified.
