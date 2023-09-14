@@ -31,7 +31,7 @@ config.exportFigure = false;
 config.exportTable = true;
 
 % Output filename to export both mat and csv files.
-basename = 'gaitData';
+outputName = 'gaitData';
 
 % data fields to exclude when exporting a csv file.
 exclude = {'path', 'sex', 'group', 'id', 'single', 'FLP', 'FRP', 'BLP', 'BRP'};
@@ -43,7 +43,7 @@ formatter = {'uid', @(x) ['#' x]};
 % Walk shifts bias towards the left. Trot shifts bias towards the right.
 getWindow = @(x) round([-2 - 4 * sum(diff(x) < 0) / max(sum(diff(x) > 0), 1), 2]);
 
-%% Setup for Walkway paper.
+%% Option 1 - Setup for Walkway paper.
 files = dir(fullfile(config.inputFolder, '**', '*DLC_*.csv'));
 paths = fullfile({files.folder}, {files.name});
 nPaths = numel(paths);
@@ -54,6 +54,32 @@ data = struct('path', paths, 'uid', uids, 'prefix', prefix, 'id', num2cell(id), 
 
 % Calculate means using the grouping variable.
 groupVariables = {'prefix', 'free'};
+
+%% Option 2 - Setup for other data.
+files = dir(fullfile(config.inputFolder, '**', '*DLC_*.csv'));
+paths = fullfile({files.folder}, {files.name});
+nPaths = numel(paths);
+
+% Get identifiers from filenames.
+% A naming convention encoded date and time, group, id, sex, single/group, forced/free in the filename.
+uids = cell(size(paths));
+prefixes = cell(size(paths));
+for i = 1:nPaths
+    path = paths{i};
+    parts = strsplit(path, '-');
+    switch numel(parts)
+        case 3
+            prefixes{i} = parts{1}(1:2);
+            uids{i} = parts{2}(2:end);
+        case 2
+            prefixes{i} = 'Unknown';
+            uids{i} = parts{2}(2:end);
+        otherwise
+            prefixes{i} = 'Unknown';
+            uids{i} = repmat('0', 1, 20);
+    end
+end
+data = struct('filename', filenames, 'uid', uids, 'prefix', prefixes);
 
 %% Find corresponding video files.
 if config.playback
@@ -182,7 +208,7 @@ if config.exportTable
     end
     
     % Save mat file with all data.
-    filename = fullfile(parent, sprintf('%s.mat', basename));
+    filename = fullfile(parent, sprintf('%s.mat', outputName));
     save(filename, 'data', 'config');
     
     % Split into separate columns variables with multiple values.
@@ -191,11 +217,11 @@ if config.exportTable
     [~, include] = setdiff(tbl.Properties.VariableNames, exclude, 'stable');
     % Format variables.
     tbl = tables.format(tbl(:, include), formatter{:});
-    filename = fullfile(parent, sprintf('%s.csv', basename));
+    filename = fullfile(parent, sprintf('%s.csv', outputName));
     writetable(tbl, filename);
     
     % Export a csv file with the mean of numeric data grouped by the grouping variable.
     meanTable = tables.group(tbl, groupVariables, @mean);
-    filename = fullfile(parent, sprintf('%s-mean.csv', basename));
+    filename = fullfile(parent, sprintf('%s-mean.csv', outputName));
     writetable(meanTable, filename);
 end

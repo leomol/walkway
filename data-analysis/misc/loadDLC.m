@@ -1,7 +1,7 @@
 % Read DLC in csv format into a MATLAB table.
 
 % 2022-07-13. Leonardo Molina.
-% 2022-12-07. Last modified.
+% 2023-09-15. Last modified.
 function data = loadDLC(path)
     fid = fopen(path, 'rt');
     % Ignore first line.
@@ -15,7 +15,11 @@ function data = loadDLC(path)
     % Read all, drop frame index.
     data = textscan(fid, repmat('%f', 1, nColumns), 'Delimiter', ',', 'HeaderLines', 3);
     fclose(fid);
-    data = [data{2:end}];
+    % Remove the filename column, if any.
+    if mod(numel(data), 2) ~= 0
+        data = data(2:end);
+    end
+    data = [data{:}];
     % Append x, y, p to header.
     header = cellfun(@(part) cellfun(@(suffix) sprintf('%s_%s', part, suffix), {'x', 'y', 'p'}, 'UniformOutput', false), columns(2:3:end), 'UniformOutput', false);
     header = [header{:}];
