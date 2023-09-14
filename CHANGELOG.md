@@ -1,4 +1,6 @@
 ## Data analysis changelog
+* 2023-09-15
+	- Added `interlimbCoordinationStats.m` to facilitate printing interlimb coordination statistics.
 * 2023-08-22
 	- Added a function for Watson-Williams statistics.
 	- Minor documentation changes.

@@ -10,15 +10,14 @@
 % where F:Front, B:Back, L:Left, R:Right, C:Body center, CA:Body angle
 
 % 2023-07-11. Leonardo Molina.
-% 2023-08-21. Last modified.
+% 2023-09-15. Last modified.
 
 %% Search recursively for DLC output files called "*DLC.csv" under project folder.
 config = struct();
 % Root folder with DLC files.
-config.inputFolder = 'W:/Walkway/Walkway paper/VGL/VGL cut videos';
+config.inputFolder = 'VGL cut videos';
 % Where to save data. Leave empty to save next to each csv file.
-config.outputFolder = 'C:\Users\Molina\Documents\public\data\HALO\Walkway\';
-% config.inputFolder = 'U:\Juyeon\Gait_Selected\9.10';
+config.outputFolder = 'Walkway';
 
 config.framerate = 170;
 config.scale = 40 / 1440;
@@ -81,7 +80,7 @@ end
 
 for i = 1:nPaths
     % Load data.
-    [FLX, FLY, FRX, FRY, BLX, BLY, BRX, BRY, ~, ~, CA] = loadData(paths{i}, config.scale, config.angleSmoothWindow);
+    [FLX, FLY, FRX, FRY, BLX, BLY, BRX, BRY, CX, CY, CA] = loadData(paths{i}, config.scale, config.angleSmoothWindow);
     
     % Distance from center.
     angle = circular.mean(CA);
@@ -123,6 +122,9 @@ for i = 1:nPaths
     distance = @(x, y, k) mean(sqrt(diff(x(k)) .^ 2 + diff(y(k)) .^ 2));
     data(i).swingLength = [distance(FLX, FLY, FLW), distance(FRX, FRY, FRW), distance(BLX, BLY, BLW), distance(BRX, BRY, BRW)];
     data(i).stanceLength = [distance(FLX, FLY, FLC), distance(FRX, FRY, FRC), distance(BLX, BLY, BLC), distance(BRX, BRY, BRC)];
+
+    % Body speed (only consider data points at edges).
+    data(i).speed = sqrt((CX(end) - CX(1)) .^ 2 + (CY(end) - CY(1)) .^ 2) * config.framerate;
     
     % Report progress.
     fprintf('%05i:%05i\n', i, nPaths);
