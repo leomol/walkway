@@ -14,7 +14,7 @@
 %   [pValue, f, delta, meanAngle] = circular.watsonWilliams(angles1, angles2, angles3)
 
 % 2023-08-18. Leonardo Molina.
-% 2023-08-22. Last modified.
+% 2023-09-15. Last modified.
 function [pValue, f, delta, meanAngle] = watsonWilliams(varargin)
     samples = varargin;
     nSamples = numel(samples);
@@ -24,7 +24,7 @@ function [pValue, f, delta, meanAngle] = watsonWilliams(varargin)
     else
         combined = cat(1, samples{:});
     end
-    nPoints = numel(combined);
+    nPoints = sum(~isnan(combined));
     [r, meanAngle] = main(combined);
     % dof page 195 ~ 203
     % Table B.37.
@@ -40,9 +40,9 @@ function [pValue, f, delta, meanAngle] = watsonWilliams(varargin)
 end
 
 function [r, angle] = main(angles)
-    n = numel(angles);
-    y = mean(sin(angles));
-    x = mean(cos(angles));
+    n = sum(~isnan(angles));
+    y = mean(sin(angles), 'OmitNan');
+    x = mean(cos(angles), 'OmitNan');
     m = sqrt(x ^ 2 + y ^ 2);
     r = n * m;
     angle = atan2(y, x);

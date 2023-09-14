@@ -16,7 +16,7 @@
 % Run the library's startup.m script every time MATLAB is restarted.
 
 % 2023-09-14. Leonardo Molina.
-% 2023-09-14. Last modified.
+% 2023-09-15. Last modified.
 
 %% Configuration.
 % Specify full path of input csv file with 'offset' columns.

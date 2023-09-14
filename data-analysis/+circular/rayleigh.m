@@ -16,17 +16,17 @@
 %   [pValue, f, delta, meanAngle] = circular.rayleigh(angles, expectedPhase)
 
 % 2023-08-09. Leonardo Molina.
-% 2023-08-21. Last modified.
+% 2023-09-15. Last modified.
 function [pValue, f, delta, meanAngle] = rayleigh(angles, expectedAngle, alpha)
     if nargin < 3
         alpha = 0.05;
     end
     modifiedRayleigh = numel(expectedAngle) == 1;
-    x = mean(cos(angles));
-    y = mean(sin(angles));
+    x = mean(cos(angles), 'OmitNaN');
+    y = mean(sin(angles), 'OmitNaN');
     m = sqrt(x ^ 2 + y ^ 2);
     % Equation 27.1, page 625.
-    nPoints = numel(angles);
+    nPoints = sum(~isnan(angles));
     r = nPoints * m;
     meanAngle = atan2(y, x);
     if modifiedRayleigh

@@ -3,6 +3,7 @@
 	- Added `interlimbCoordinationStats.m` to facilitate printing interlimb coordination statistics.
 	- Edited `loadDLC.m` so that it can load DLC files with or without the filename column.
 	- Added an example setup in `process.m` so that generic data can be run.
+	- Updated `circular.rayleigh.m`, and `circular.watsonWilliams.m` to handle missing data.
 * 2023-08-22
 	- Added a function for Watson-Williams statistics.
 	- Minor documentation changes.

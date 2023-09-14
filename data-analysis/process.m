@@ -15,9 +15,9 @@
 %% Search recursively for DLC output files called "*DLC.csv" under project folder.
 config = struct();
 % Root folder with DLC files.
-config.inputFolder = 'VGL cut videos';
+config.inputFolder = 'U:\Juyeon\Gait_Selected';
 % Where to save data. Leave empty to save next to each csv file.
-config.outputFolder = 'Walkway';
+config.outputFolder = 'U:\Juyeon\outputs';
 
 config.framerate = 170;
 config.scale = 40 / 1440;
@@ -43,7 +43,7 @@ formatter = {'uid', @(x) ['#' x]};
 % Walk shifts bias towards the left. Trot shifts bias towards the right.
 getWindow = @(x) round([-2 - 4 * sum(diff(x) < 0) / max(sum(diff(x) > 0), 1), 2]);
 
-%% Option 1 - Setup for Walkway paper.
+% Option 1 - Setup for Walkway paper.
 files = dir(fullfile(config.inputFolder, '**', '*DLC_*.csv'));
 paths = fullfile({files.folder}, {files.name});
 nPaths = numel(paths);
@@ -55,31 +55,35 @@ data = struct('path', paths, 'uid', uids, 'prefix', prefix, 'id', num2cell(id), 
 % Calculate means using the grouping variable.
 groupVariables = {'prefix', 'free'};
 
-%% Option 2 - Setup for other data.
-files = dir(fullfile(config.inputFolder, '**', '*DLC_*.csv'));
-paths = fullfile({files.folder}, {files.name});
-nPaths = numel(paths);
-
-% Get identifiers from filenames.
-% A naming convention encoded date and time, group, id, sex, single/group, forced/free in the filename.
-uids = cell(size(paths));
-prefixes = cell(size(paths));
-for i = 1:nPaths
-    path = paths{i};
-    parts = strsplit(path, '-');
-    switch numel(parts)
-        case 3
-            prefixes{i} = parts{1}(1:2);
-            uids{i} = parts{2}(2:end);
-        case 2
-            prefixes{i} = 'Unknown';
-            uids{i} = parts{2}(2:end);
-        otherwise
-            prefixes{i} = 'Unknown';
-            uids{i} = repmat('0', 1, 20);
-    end
-end
-data = struct('filename', filenames, 'uid', uids, 'prefix', prefixes);
+% %% Option 2 - Setup for other data.
+% files = dir(fullfile(config.inputFolder, '**', '*DLC_*.csv'));
+% folders = {files.folder};
+% filenames = {files.name};
+% paths = fullfile(folders, filenames);
+% nPaths = numel(paths);
+% config.strideCriteria = 'best';
+% 
+% % Get identifiers from filenames.
+% % A naming convention encoded date and time, group, id, sex, single/group, forced/free in the filename.
+% uids = cell(size(paths));
+% prefixes = cell(size(paths));
+% for i = 1:nPaths
+%     filename = filenames{i};
+%     parts = strsplit(filename, '-');
+%     switch numel(parts)
+%         case 3
+%             prefixes{i} = parts{1}(1:2);
+%             uids{i} = parts{2}(2:end);
+%         case 2
+%             prefixes{i} = 'Unknown';
+%             uids{i} = parts{2}(2:end);
+%         otherwise
+%             prefixes{i} = 'Unknown';
+%             uids{i} = repmat('0', 1, 20);
+%     end
+% end
+% data = struct('filename', filenames, 'uid', uids, 'prefix', prefixes);
+% groupVariables = {'prefix'};
 
 %% Find corresponding video files.
 if config.playback
