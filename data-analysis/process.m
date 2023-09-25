@@ -27,7 +27,7 @@ config.strideCriteria = 'stance';
 
 config.playback = false;
 config.showFigure = false;
-config.exportFigure = false;
+config.exportFigure = true;
 config.exportTable = true;
 
 % Output filename to export both mat and csv files.
@@ -43,47 +43,47 @@ formatter = {'uid', @(x) ['#' x]};
 % Walk shifts bias towards the left. Trot shifts bias towards the right.
 getWindow = @(x) round([-2 - 4 * sum(diff(x) < 0) / max(sum(diff(x) > 0), 1), 2]);
 
-% Option 1 - Setup for Walkway paper.
-files = dir(fullfile(config.inputFolder, '**', '*DLC_*.csv'));
-paths = fullfile({files.folder}, {files.name});
-nPaths = numel(paths);
-
-% Get identifiers from filenames.
-[uids, prefix, group, id, sex, single, free] = getInfo(paths);
-data = struct('path', paths, 'uid', uids, 'prefix', prefix, 'id', num2cell(id), 'sex', num2cell(sex), 'single', num2cell(single), 'free', num2cell(free), 'group', num2cell(group));
-
-% Calculate means using the grouping variable.
-groupVariables = {'prefix', 'free'};
-
-% %% Option 2 - Setup for other data.
+% %% Option 1 - Setup for Walkway paper.
 % files = dir(fullfile(config.inputFolder, '**', '*DLC_*.csv'));
-% folders = {files.folder};
-% filenames = {files.name};
-% paths = fullfile(folders, filenames);
+% paths = fullfile({files.folder}, {files.name});
 % nPaths = numel(paths);
-% config.strideCriteria = 'best';
 % 
 % % Get identifiers from filenames.
-% % A naming convention encoded date and time, group, id, sex, single/group, forced/free in the filename.
-% uids = cell(size(paths));
-% prefixes = cell(size(paths));
-% for i = 1:nPaths
-%     filename = filenames{i};
-%     parts = strsplit(filename, '-');
-%     switch numel(parts)
-%         case 3
-%             prefixes{i} = parts{1}(1:2);
-%             uids{i} = parts{2}(2:end);
-%         case 2
-%             prefixes{i} = 'Unknown';
-%             uids{i} = parts{2}(2:end);
-%         otherwise
-%             prefixes{i} = 'Unknown';
-%             uids{i} = repmat('0', 1, 20);
-%     end
-% end
-% data = struct('filename', filenames, 'uid', uids, 'prefix', prefixes);
-% groupVariables = {'prefix'};
+% [uids, prefix, group, id, sex, single, free] = getInfo(paths);
+% data = struct('path', paths, 'uid', uids, 'prefix', prefix, 'id', num2cell(id), 'sex', num2cell(sex), 'single', num2cell(single), 'free', num2cell(free), 'group', num2cell(group));
+% 
+% % Calculate means using the grouping variable.
+% groupVariables = {'prefix', 'free'};
+
+%% Option 2 - Setup for other data.
+files = dir(fullfile(config.inputFolder, '**', '*DLC_*.csv'));
+folders = {files.folder};
+filenames = {files.name};
+paths = fullfile(folders, filenames);
+nPaths = numel(paths);
+config.strideCriteria = 'best';
+
+% Get identifiers from filenames.
+% A naming convention encoded date and time, group, id, sex, single/group, forced/free in the filename.
+uids = cell(size(paths));
+prefixes = cell(size(paths));
+for i = 1:nPaths
+    filename = filenames{i};
+    parts = strsplit(filename, '-');
+    switch numel(parts)
+        case 3
+            prefixes{i} = parts{1}(1:2);
+            uids{i} = parts{2}(2:end);
+        case 2
+            prefixes{i} = 'Unknown';
+            uids{i} = parts{2}(2:end);
+        otherwise
+            prefixes{i} = 'Unknown';
+            uids{i} = repmat('0', 1, 20);
+    end
+end
+data = struct('paths', paths, 'uid', uids, 'prefix', prefixes);
+groupVariables = {'prefix'};
 
 %% Find corresponding video files.
 if config.playback

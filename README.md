@@ -120,4 +120,4 @@ See [Changelog](CHANGELOG.md)
 
 [acquisition]: https://github.com/leomol/walkway
 [annotator]: https://github.com/leomol/gait-marker
-[paper]: https://duckduckgo.com/?q=!High+throughput+gait+acquisition+system+for+freely+moving+mice
+[paper]: https://journals.physiology.org/doi/abs/10.1152/jn.00133.2023
