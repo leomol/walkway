@@ -10,14 +10,14 @@
 % where F:Front, B:Back, L:Left, R:Right, C:Body center, CA:Body angle
 
 % 2023-07-11. Leonardo Molina.
-% 2023-09-15. Last modified.
+% 2023-10-11. Last modified.
 
 %% Search recursively for DLC output files called "*DLC.csv" under project folder.
 config = struct();
 % Root folder with DLC files.
-config.inputFolder = 'U:\Juyeon\Gait_Selected';
+config.inputFolder = 'U:\JC\Gait_Selected';
 % Where to save data. Leave empty to save next to each csv file.
-config.outputFolder = 'U:\Juyeon\outputs';
+config.outputFolder = 'U:\JC\outputs';
 
 config.framerate = 170;
 config.scale = 40 / 1440;
@@ -27,7 +27,7 @@ config.strideCriteria = 'stance';
 
 config.playback = false;
 config.showFigure = false;
-config.exportFigure = true;
+config.exportFigure = false;
 config.exportTable = true;
 
 % Output filename to export both mat and csv files.
@@ -124,7 +124,7 @@ for i = 1:nPaths
     FRP = getPhases(FRX, FRY, CA, config.motionThreshold, getWindow(FRM));
     BLP = getPhases(BLX, BLY, CA, config.motionThreshold, getWindow(BLM));
     BRP = getPhases(BRX, BRY, CA, config.motionThreshold, getWindow(BRM));
-
+    
     data(i).FLP = FLP;
     data(i).FRP = FRP;
     data(i).BLP = BLP;
@@ -143,7 +143,7 @@ for i = 1:nPaths
     data(i).offsetFRBR = getPhaseOffset(FRW, FRC, BRW, BRC);
     data(i).offsetFRBL = getPhaseOffset(FRW, FRC, BLW, BLC);
     data(i).offsetFLBR = getPhaseOffset(FLW, FLC, BRW, BRC);
-
+    
     % Swing and stance duration.
     data(i).swingDuration = [mean(diff(FLW)), mean(diff(FRW)), mean(diff(BLW)), mean(diff(BRW))] / config.framerate;
     data(i).stanceDuration = [mean(diff(FLC)), mean(diff(FRC)), mean(diff(BLC)), mean(diff(BRC))] / config.framerate;
@@ -152,9 +152,9 @@ for i = 1:nPaths
     distance = @(x, y, k) mean(sqrt(diff(x(k)) .^ 2 + diff(y(k)) .^ 2));
     data(i).swingLength = [distance(FLX, FLY, FLW), distance(FRX, FRY, FRW), distance(BLX, BLY, BLW), distance(BRX, BRY, BRW)];
     data(i).stanceLength = [distance(FLX, FLY, FLC), distance(FRX, FRY, FRC), distance(BLX, BLY, BLC), distance(BRX, BRY, BRC)];
-
+    
     % Body speed (only consider data points at edges).
-    data(i).speed = sqrt((CX(end) - CX(1)) .^ 2 + (CY(end) - CY(1)) .^ 2) * config.framerate;
+    data(i).speed = sqrt((CX(end) - CX(1)) .^ 2 + (CY(end) - CY(1)) .^ 2) * config.framerate / numel(CX);
     
     % Report progress.
     fprintf('%05i:%05i\n', i, nPaths);

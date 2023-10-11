@@ -1,4 +1,6 @@
 ## Data analysis changelog
+* 2023-10-11
+	- Fixed bug in speed calculation in `process.m`
 * 2023-09-15
 	- Added `interlimbCoordinationStats.m` to facilitate printing interlimb coordination statistics.
 	- Edited `loadDLC.m` so that it can load DLC files with or without the filename column.
