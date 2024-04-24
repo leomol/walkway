@@ -16,11 +16,11 @@
 % Run the library's startup.m script every time MATLAB is restarted.
 
 % 2023-09-14. Leonardo Molina.
-% 2023-09-15. Last modified.
+% 2024-04-24. Last modified.
 
 %% Configuration.
 % Specify full path of input csv file with 'offset' columns.
-filename = 'gaitData.csv';
+filename = 'U:\JC\outputs\gaitData-mean.csv';
 
 % Rayleigh test - Specify the expected phase for each pair of limbs.
 expectedPhases = struct();
@@ -32,10 +32,10 @@ expectedPhases.FRBL = 0;
 expectedPhases.FLBR = 0;
 
 % Rayleigh test - Specify range of rows to compare. For example 2:22.
-rayleighRows = 2:22;
+rayleighRows = 17:21;
 
 % Watson-Williams test - Specify range of rows to be compared. For example {2:22, 23:42}.
-watsonWilliamsRows = {2:22, 23:42};
+watsonWilliamsRows = {2:6, 17:21};
 
 %% Run tests.
 % Load data.
@@ -44,24 +44,26 @@ tbl = readtable(filename);
 fnames = fieldnames(expectedPhases);
 nPairs = numel(fnames);
 nMetrics = 3;
-rayleightData = NaN(nPairs, nMetrics);
+rayleighData = NaN(nPairs, nMetrics);
 watsonWilliamsData = NaN(nPairs, nMetrics);
-header = {'pValue', 'average', 'error'};
+header = {'p-value', 'average (deg)', 'error'};
 for i = 1:nPairs
     fname = fnames{i};
     xName = ['offset' fname 'X'];
     yName = ['offset' fname 'Y'];
-    x = tbl{rayleighRows, xName};
-    y = tbl{rayleighRows, yName};
-    u = cart2pol(x, y);
+    x = tbl{rayleighRows - 1, xName};
+    y = tbl{rayleighRows - 1, yName};
+    x = repmat(x, 5, 1);
+    y = repmat(y, 5, 1);
     % Run the Rayleigh test.
-    expectedPhase = expectedPhases.(fname) / 180 * pi;
-    [p, ~, phaseError, meanPhase] = circular.rayleigh(u, expectedPhase);
+    expectedPhase = deg2rad(expectedPhases.(fname));
+    phases = cart2pol(x, y);
+    [p, ~, phaseError, meanPhase] = circular.rayleigh(phases, expectedPhase);
     meanPhase(meanPhase < 0) = meanPhase(meanPhase < 0) + 2 * pi;
-    rayleightData(i, :) = [p, meanPhase / pi * 180, phaseError / pi * 180];
+    rayleighData(i, :) = [p, wrapTo360(rad2deg(meanPhase)), rad2deg(phaseError)];
     % Run the Watson Williams test.
-    rows1 = watsonWilliamsRows{1};
-    rows2 = watsonWilliamsRows{2};
+    rows1 = watsonWilliamsRows{1} - 1;
+    rows2 = watsonWilliamsRows{2} - 1;
     x1 = tbl{rows1, xName};
     y1 = tbl{rows1, yName};
     u1 = cart2pol(x1, y1);
@@ -69,11 +71,11 @@ for i = 1:nPairs
     y2 = tbl{rows2, yName};
     u2 = cart2pol(x2, y2);
     [p, ~, phaseError, meanPhase] = circular.watsonWilliams(u1, u2);
-    watsonWilliamsData(i, :) = [p, meanPhase / pi * 180, phaseError / pi * 180];
+    watsonWilliamsData(i, :) = [p, wrapTo360(rad2deg(meanPhase)), rad2deg(phaseError)];
 end
-rayleightData = array2table(rayleightData, 'VariableNames', header, 'RowNames', fnames);
+rayleighData = array2table(rayleighData, 'VariableNames', header, 'RowNames', fnames);
 watsonWilliamsData = array2table(watsonWilliamsData, 'VariableNames', header, 'RowNames', fnames);
-fprintf('Rayleight test:\n');
-disp(rayleightData);
+fprintf('Rayleigh test:\n');
+disp(rayleighData);
 fprintf('Watson-Williams test:\n');
 disp(watsonWilliamsData);

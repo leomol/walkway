@@ -1,4 +1,6 @@
 ## Data analysis changelog
+* 2024-04-24
+	- Simplified `rayleigh.m` to accept only angles as inputs to the function, rather than Cartesian coordinates corresponding to the angles.
 * 2023-10-11
 	- Fixed bug in speed calculation in `process.m`
 * 2023-09-15

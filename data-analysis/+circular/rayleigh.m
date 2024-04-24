@@ -1,8 +1,10 @@
 % Test for circular uniformity using Rayleigh test.
-% circular.rayleigh(angles, expectedPhase, alpha)
+% circular.rayleigh(angles)
+% circular.rayleigh(..., expectedPhase, alpha)
+% 
 %   expectedPhase:
 %      expected phase when using modified Rayleigh's test.
-%      set empty to use a non-modified Rayleigh's test.
+%      set empty to use a non-modified Rayleigh's test (default).
 %
 % Reference:
 %   Biostatistical Analysis by Jerrold H Zar (5th edition).
@@ -16,33 +18,40 @@
 %   [pValue, f, delta, meanAngle] = circular.rayleigh(angles, expectedPhase)
 
 % 2023-08-09. Leonardo Molina.
-% 2023-09-15. Last modified.
-function [pValue, f, delta, meanAngle] = rayleigh(angles, expectedAngle, alpha)
+% 2024-04-24. Last modified.
+function [pValue, chiSquare, delta, meanAngle] = rayleigh(angles, expectedAngle, alpha)
+    if nargin < 2
+        expectedAngle = [];
+    end
     if nargin < 3
         alpha = 0.05;
     end
-    modifiedRayleigh = numel(expectedAngle) == 1;
     x = mean(cos(angles), 'OmitNaN');
     y = mean(sin(angles), 'OmitNaN');
-    m = sqrt(x ^ 2 + y ^ 2);
+    n = sum(~isnan(angles));
     % Equation 27.1, page 625.
-    nPoints = sum(~isnan(angles));
-    r = nPoints * m;
+    r = sqrt(x ^ 2 + y ^ 2);
+    R = n * r;
     meanAngle = atan2(y, x);
+    modifiedRayleigh = numel(expectedAngle) == 1;
     if modifiedRayleigh
         % Equation 27.5, page 626.
-        v = r * cos(meanAngle - expectedAngle);
+        v = R * cos(meanAngle - expectedAngle);
         % Equation 27.6, page 626.
-        u = v * sqrt(2 / nPoints);
+        u = v * sqrt(2 / n);
         % Table B.35: Critical Values of u for the V Test of Circular Uniformity, page 844.
-        pValue = lookup.CircularUniformity(nPoints, u);
+        pValue = lookup.CircularUniformity(n, u);
     else
         % Equation 27.4, page 625.
-        pValue = exp(sqrt(1 + 4 * nPoints + 4 * (nPoints ^ 2 - r ^ 2)) - (1 + 2 * nPoints));
+        pValue = exp(sqrt(1 + 4 * n + 4 * (n ^ 2 - R ^ 2)) - (1 + 2 * n));
     end
     % Table B.1: Critical Values of the Chi-Square (x^2) Distribution, page 672.
     dof = 1;
-    f = lookup.ChiSquare(dof, alpha);
-    % Equation 26.25, page 618.
-    delta = acos(sqrt(nPoints ^ 2 - (nPoints ^ 2 - r ^ 2) * exp(f / nPoints)) / r);
+    chiSquare = lookup.ChiSquare(dof, alpha);
+    % Equation 26.24 and 26.25, page 618.
+    if r <= 0.9
+        delta = acos(sqrt(2 * n * (2 * R ^ 2 - n * chiSquare) / (4 * n - chiSquare)) / R);
+    else
+        delta = acos(sqrt(n ^ 2 - (n ^ 2 - R ^ 2) * exp(chiSquare / n)) / R);
+    end
 end
